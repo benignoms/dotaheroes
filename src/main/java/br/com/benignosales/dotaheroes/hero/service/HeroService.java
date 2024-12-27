@@ -33,7 +33,7 @@ public class HeroService implements IHeroService {
     @Override
     public List<HeroDto> getHeroThatNameContains(String name) {
 
-        return heroRepository.findByHeroNameContaining(name)
+        return heroRepository.findByNameContaining(name)
                 .stream()
                 .map(HeroDto::toDto)
                 .toList();

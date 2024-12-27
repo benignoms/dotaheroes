@@ -12,6 +12,9 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static br.com.benignosales.dotaheroes.common.HeroConstants.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -91,5 +94,30 @@ public class HeroControllerTest {
 
         mockMvc.perform(get("/hero/" + INVALID_UUID))
                 .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void getHero_ByExistingNameContainingText_ReturnsHeros() throws Exception {
+
+        String partOfName = "Shadow";
+        when(service.getHeroThatNameContains(partOfName)).thenReturn(List.of(VALID_HERO_DTO));
+
+        mockMvc.perform(get("/hero").param("name", partOfName))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$..[0].name")
+                        .value(VALID_HERO_DTO.name()))
+                .andExpect(jsonPath("$..[0].description")
+                        .value(VALID_HERO_DTO.description()));
+    }
+
+    @Test
+    public void getHero_ByExistingNameContainingText_ReturnsEmpty() throws Exception {
+
+        String partOfName = "Mondragon";
+        when(service.getHeroThatNameContains(partOfName)).thenReturn(new ArrayList<>());
+
+        mockMvc.perform(get("/hero").param("name", partOfName))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isEmpty());
     }
 }

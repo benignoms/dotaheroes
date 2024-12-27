@@ -81,7 +81,7 @@ public class HeroServiceTest {
     public void findHeroByName_ThatContainsValidText_ReturnsHero() {
 
         String validPartText = VALID_HERO_WITH_ID.getName().substring(5);
-        when(heroRepository.findByHeroNameContaining(validPartText))
+        when(heroRepository.findByNameContaining(validPartText))
                 .thenReturn(List.of(VALID_HERO_WITH_ID));
         List<HeroDto> herosThaNameContains = heroService.getHeroThatNameContains(validPartText);
         assertThat(herosThaNameContains).isNotEmpty();
@@ -93,7 +93,7 @@ public class HeroServiceTest {
     public void findHeroByName_ThatContainsInvalidText_ReturnsHero() {
 
         String invalidPartText = "00000";
-        when(heroRepository.findByHeroNameContaining(invalidPartText))
+        when(heroRepository.findByNameContaining(invalidPartText))
                 .thenReturn(new ArrayList<>());
         List<HeroDto> emptyList = heroService.getHeroThatNameContains(invalidPartText);
         assertThat(emptyList).isEmpty();

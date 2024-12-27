@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface IHeroRepository extends JpaRepository<Hero, String> {
 
-    List<Hero> findByHeroNameContaining(String heroName);
+    List<Hero> findByNameContaining(String heroName);
 
 }
